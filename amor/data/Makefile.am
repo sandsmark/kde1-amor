@@ -1,9 +1,14 @@
-SUBDIRS = blob ghost eyes b
+SUBDIRS = blob ghost eyes b neko pingu worm static tao
 
-data_DATA = blobrc ghostrc eyesrc brc tips-en
+amor_DATA = blobrc ghostrc eyesrc brc nekorc pingurc wormrc tips-en \
+	    billyrc bsdrc tuxrc taorc
 
 # This is where it will all be installed
-datadir = $(kde_datadir)/amor
+amordir = $(kde_datadir)/amor
 
 install-data-local:
-	(cd $(datadir) && ln -fs tips-en tips-default)
+	-rm -f $(DESTDIR)$(amordir)/tips
+	$(LN_S) $(amordir)/tips-en $(DESTDIR)$(amordir)/tips
+
+uninstall-local:
+	-rm -f $(DESTDIR)$(amordir)/tips

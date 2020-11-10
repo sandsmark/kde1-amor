@@ -1,0 +1,117 @@
+# KDE Config File
+[Config]
+PixmapPath=tao
+Description=Tao
+Description[he]=טאו
+Description[ru]=Дао
+Description[th]=เต๋า
+Description[zh_CN]=道
+About=By Daniel Pfeiffer <occitan@esperanto.org>\nYin Yang symbol inspired by my Tai Chi practice.
+About[af]=Deur Daniel Pfeiffer <occitan@esperanto.org>\nYin Yang simbool geïnspireer Deur my Tai Chi oefening.
+About[ar]=من تصميم دانييل فايفر <occitan@esperanto.org>
+About[az]=Daniel Pfeiffer <occitan@esperanto.org> tərəfindən\nYin Yang symbol inspired by my Tai Chi practice.
+About[bs]=Autor Daniel Pfeiffer <occitan@esperanto.org>\nYin Yang simbol inspirisan mojim prakticiranjem Tai Chi.
+About[cs]=Autor Daniel Pfeiffer <occitan@esperanto.org>\nYin Yang symbol inspirován mým cvičením Taiči
+About[da]=Af Daniel Pfeiffer <occitan@esperanto.org>\nYin Yang-symbol inspireret fra mine Tai Chi-øvelser.
+About[de]=Von Daniel Pfeiffer <occitan@esperanto.org>\nYin-Yang-Symbol inspiriert durch meine Tai-Chi-Übungen
+About[el]=Από τον Daniel Pfeiffer <occitan@esperanto.org>\n Το σύμβολο Yin Yang εμπνευσμένο από την πρακτική μου στο Tai Chi.
+About[eo]=De Daniel Pfeiffer <occitan@esperanto.org>\nJinjan-simbolo inspirita de mia Tajĝi-praktikado.
+About[es]=Por Daniel Pfeiffer <occitan@esperanto.org>\nSímbolo del Yin Yang, inspirado en mi práctica de Tai Chi.
+About[et]=autor: Daniel Pfeiffer <occitan@esperanto.org>\nYin-yangi sümbol jäi mulle külge Tai Chi harrastusest.
+About[fi]=Tehnyt Daniel Pfeiffer <occitan@esperanto.org>\nYin Yang symbolin inspiroinut Tai Chi harjoitukseni.
+About[fr]=Par Daniel Pfeiffer <occitan@esperanto.org>\nLe symbole Yin Yang est inspiré par ma pratique du Tai Chi.
+About[he]=מאת דניאל פפר <occitan@esperanto.org>\nההשראה לסמל היין-יאנג נלקחה מאימוני הטאי צ'י שלי.
+About[hr]=By Daniel Pfeiffer <occitan@esperanto.org>\nYin Yang simbol inspiriran mojim vježbanjem Tai-Chi-ja
+About[hu]=Készítette: Daniel Pfeiffer (<occitan@esperanto.org>)\nA 'Yin Yang' szimbólumot saját Tai Chi gyakorlataimból merítettem.
+About[is]=By Daniel Pfeiffer <occitan@esperanto.org>\nYin Yang merkiÃ° kom til af Ã¡huga mÃ­num Ã¡ Tai Chi.
+About[it]=Di Daniel Pfeiffer <occitan@esperanto.org>\nSimbolo Yin Yang ispirato alla mia pratica Tai Chi.
+About[nb]=Av Daniel Pfeiffer <occitan@esperanto.org>\nYin Yang symbolet er inspirert av min Tai Chi-erfaring.
+About[nl]=Door Daniel Pfeiffer <occitan@esperanto.org>\nYin Yang-symbool geïnspireerd door mijn Tai Chi-ervaring.
+About[nn]=Av Daniel Pfeiffer <occitan@esperanto.org>\nYin Yang-symbolet er inspirert av Tai Chi-erfaringa mi.
+About[pl]=Autorstwa Daniela Pfeiffera <occitan@esperanto.org>\nYin Symbol Yang inspirowany przez moją praktykę Tai Chi.
+About[pt]=De Daniel Pfeiffer <occitan@esperanto.org>\nSímbolo do Yin Yang inspirado na minha prática de Tai Chi.
+About[pt_BR]=Por Daniel Pfeiffer <occitan@esperanto.org>\nSímbolo Yin Yang inspirado em minha prática de Tai Chi.
+About[ro]=De Daniel Pfeiffer <occitan@esperanto.org>\nSimbol Yin Yang inspirat de practica Tai Chi.
+About[ru]=Автор - Daniel Pfeiffer <occitan@esperanto.org>\nСимвол инь-ян взят из моей практики тайцзи.
+About[sk]=Vytvoril Daniel Pfeiffer <occitan@esperanto.org>\nSymbol Yin Yang inšpirovaný mojou skúsenosťou s Tai Chi.
+About[sl]=Od Daniela Pfeifferja <occitan@esperanto.org>\nZa simbol jin-jang sem dobil navdih pri vadbi tai chija.
+About[sr]=Autor Danijel Fajfer <occitan@esperanto.org>\nYin Yang simbol inspirisan mojom Taj-Či vežbom.
+About[sv]=Av Daniel Pfeiffer <occitan@esperanto.org>\nYin Yang symbol inspirerad av att utöva Tai Chi
+About[th]=โดย Daniel Pfeiffer <occitan@esperanto.org>\nสัญลักษณ์ หยิน-หยาง จากแบบฝึก Tai Chi ของผม
+About[tr]=Daniel Pfeiffer <occitan@esperanto.org>\nYin Yang sembolü Tai Chi'den esinlenilmiştir.
+About[uk]=Автор: Daniel Pfeiffer <occitan@esperanto.org>\nСимвол Yin Yang від натхнення з моєї практики Tai Chi.
+About[ven]=Nga Daniel Pfeiffer <occitan@esperanto.org>\nYin Yang zwiga zwo tutuwedzhwa nga nga ndowendowe yanga ya Tai Chi.
+About[xh]=By Daniel Pfeiffer <occitan@esperanto.org>\nYin Yang iphawu ikhuthaziswe luqheliso lwam lwe Tai Chi.
+About[zh_CN]=作者：Daniel Pfeiffer <occitan@esperanto.org>\n我从太极锻炼中得到灵感的阴阳符号。
+Icon=yy.xpm
+Base=Base
+Sequences=Left,Right,Turn
+Focus=Grow
+Blur=Shrink
+Sleep=Hide
+Wake=Unhide
+Destroy=Fall
+
+[Base]
+Sequence=yy.xpm
+Movement=0
+Delay=2000
+HotspotX=0
+HotspotY=32
+
+[Left]
+Sequence=yy.xpm,yy.xpm,yy.xpm,yy.xpm,yy.xpm,yy.xpm,yy.xpm,yy.xpm,yy.xpm,yy.xpm,yy.xpm,yy.xpm,yy.xpm,yy.xpm,yy.xpm,yy.xpm,yy.xpm,yy.xpm,yy.xpm,yy.xpm,yy.xpm,yy.xpm,yy.xpm
+Movement=-2,-2,-2,-2,-2,-2,-2,-2,-2,-2,-2,-2,-2,-2,-2,-2,-2,-2,-2,-2,-2,-2,-2
+Delay=200,190,180,170,160,150,150,150,150,150,150,150,150,150,150,150,150,150,150,160,170,180,190,200
+HotspotX=0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+HotspotY=32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32
+
+[Right]
+Sequence=yy15.xpm,yy30.xpm,yy45.xpm,yy60.xpm,yy75.xpm,yy90.xpm,yy105.xpm,yy120.xpm,yy135.xpm,yy150.xpm,yy165.xpm,yy180.xpm,yy195.xpm,yy210.xpm,yy225.xpm,yy240.xpm,yy255.xpm,yy270.xpm,yy285.xpm,yy300.xpm,yy315.xpm,yy330.xpm,yy345.xpm,yy.xpm
+Movement=2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2
+Delay=200,190,180,170,160,150,150,150,150,150,150,150,150,150,150,150,150,150,150,160,170,180,190,200
+HotspotX=0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+HotspotY=32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32
+
+[Turn]
+Sequence=yy.xpm,yy15.xpm,yy30.xpm,yy45.xpm,yy60.xpm,yy75.xpm,yy90.xpm,yy105.xpm,yy120.xpm,yy135.xpm,yy150.xpm,yy165.xpm,yy180.xpm,yy195.xpm,yy210.xpm,yy225.xpm,yy240.xpm,yy255.xpm,yy270.xpm,yy285.xpm,yy300.xpm,yy315.xpm,yy330.xpm,yy345.xpm
+Movement=0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+Delay=200,190,180,170,160,150,150,150,150,150,150,150,150,150,150,150,150,150,150,160,170,180,190,200
+HotspotX=0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+HotspotY=32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32
+
+[Grow]
+Sequence=yyx6.xpm,yyx8.xpm,yyx10.xpm,yyx12.xpm,yyx14.xpm,yyx16.xpm,yyx18.xpm,yyx20.xpm,yyx22.xpm,yyx24.xpm,yyx26.xpm,yyx28.xpm,yyx30.xpm
+Movement=0,0,0,0,0,0,0,0,0,0,0,0,0
+Delay=150,150,150,150,150,150,150,150,150,150,150,150,150
+HotspotX=-13,-12,-11,-10,-9,-8,-7,-6,-5,-4,-3,-2,-1
+HotspotY=6,8,10,12,14,16,18,20,22,24,26,28,30
+
+[Shrink]
+Sequence=yyx30.xpm,yyx28.xpm,yyx26.xpm,yyx24.xpm,yyx22.xpm,yyx20.xpm,yyx18.xpm,yyx16.xpm,yyx14.xpm,yyx12.xpm,yyx10.xpm,yyx8.xpm,yyx6.xpm
+Movement=0,0,0,0,0,0,0,0,0,0,0,0,0
+Delay=150,150,150,150,150,150,150,150,150,150,150,150,150
+HotspotX=-1,-2,-3,-4,-5,-6,-7,-8,-9,-10,-11,-12,-13
+HotspotY=30,28,26,24,22,20,18,16,14,12,10,8,6
+
+[Hide]
+Sequence=yy-1.xpm,yy-2.xpm,yy-3.xpm,yy-4.xpm,yy-5.xpm,yy-6.xpm,yy-7.xpm,yy-8.xpm,yy-9.xpm
+Movement=0,0,0,0,0,0,0,0,0
+Delay=150,150,150,150,150,150,150,150,60000
+HotspotX=0,0,0,0,0,0,0,0,0
+HotspotY=31,30,29,28,27,26,25,24,23
+
+[Unhide]
+Sequence=yy-9.xpm,yy-8.xpm,yy-7.xpm,yy-6.xpm,yy-5.xpm,yy-4.xpm,yy-3.xpm,yy-2.xpm,yy-1.xpm
+Movement=0,0,0,0,0,0,0,0,0
+Delay=150,150,150,150,150,150,150,150,150
+HotspotX=0,0,0,0,0,0,0,0,0
+HotspotY=23,24,25,26,27,28,29,30,31
+
+[Fall]
+Sequence=yy15.xpm,yy30.xpm,yy45.xpm,yy60.xpm,yy75.xpm,yy90.xpm,yy105.xpm,yy120.xpm,yy135.xpm,yy150.xpm,yy165.xpm,yy180.xpm,yy195.xpm,yy210.xpm,yy225.xpm,yy240.xpm,yy255.xpm,yy270.xpm,yy285.xpm,yy300.xpm,yy315.xpm,yy330.xpm,yy345.xpm,yy.xpm,yy15.xpm,yy30.xpm
+Movement=0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+Delay=100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100
+HotspotX=0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+HotspotY=31,29,27,25,22,19,15,10,4,-3,-11,-21,-33,-47,-64,-85,-110,-140,-176,-219,-271,-333,-407,-496,-603,-731
+

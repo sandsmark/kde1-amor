@@ -1,0 +1,132 @@
+# KDE Config File
+[Config]
+PixmapPath=pingu
+Description=Tux
+Description[eo]=Tuĉjo
+Description[he]=טקס
+Description[ru]=Тукс
+Description[th]=ตุ๊กซ์
+Description[tr]=Penguen (Hareketli)
+Description[zh_CN]=Tux小企鹅
+About=By Frank Pieczynski\nBased on graphics of the game "pingus".
+About[af]=Deur Frank Pieczynski\nBased op grafieka van die speletjie "pingus".
+About[ar]=من فرانك بيسزينسكي\nمبنية على رسومات لعبة "pingus".
+About[az]=Frank Pieczynski tərəfindən\n"Pingus" oyunu qrafikaları əsasında.
+About[bs]=Autor Frank Pieczynski\nBazirano na slikama iz igre "pingus".
+About[cs]=Autor Frank Pieczynski\nNa základě grafiky hry "pingus".
+About[da]=Af Frank Pieczynski\nBaseret på grafik fra spillet "pingus".
+About[de]=Von Frank Pieczynski\nNach den Graphiken des Spiels "Pingus"
+About[el]=Από τον Frank Pieczynski\n Βασισμένο σε γραφικά από το παιχνίδι "pingus".
+About[eo]=De Frank Pieczynski\nbazita sur grafikoj de la ludo "pingus".
+About[es]=Por Frank Pieczynski\nBasado en gráficos del juego "pingus".
+About[et]=Autor: Frank Pieczynski\nAluseks mängu "pingus" graafika.
+About[fi]=Tehnyt Frank Pieczynski\nPerustuu "pingus" pelin grafiikoihin.
+About[fr]=Par Frank Pieczynski\nBasé sur les graphismes du jeu « pingus ».
+About[he]=מאת פרנק פיצינקסי\nמבוסס על הגרפיקה של המשחק "pingus".
+About[hr]=Autor: Frank Pieczynski\nBazirano na grafici iz igre "pingus".
+About[hu]=Készítette: Frank Pieczynski\nA grafika a "Pingus" nevű játékból származik.
+About[is]=By Frank Pieczynski\nByggt Ã¡ myndefni Ãºr leiknum "pingus".
+About[it]=Di Frank Pieczynski.\nBasato sulla grafica del gioco "pingus".
+About[ja]=By Frank Pieczynski\nゲーム "pingus"のグラフィックに基づく。
+About[nb]=Av Frank Pieczynski\nBasert på grafikk fra spillet "pingus".
+About[nl]=Door Frank Pieczynski\nGebaseerd op illustraties uit het spel "pingus".
+About[nn]=Av Frank Pieczynski\nBasert på grafikk frå spelet "pingus".
+About[pl]=Autorstwa Franka Pieczynskiego\nNa podstawie grafiki z gry "pingus".
+About[pt]=De Frank Pieczynski\nBaseado numa imagem do jogo "pingus".
+About[pt_BR]=Por Frank Pieczynski\nBaseado nos gráficos do jogo "pingus".
+About[ro]=De Frank Pieczynski\nBazat pe grafica jocului "pingus".
+About[ru]=Автор - Frank Pieczynski\nНа основе графики игры "pingus".
+About[sk]=Vytvoril Frank Pieczynski\nZaložené na grafike z hry "pingus".
+About[sl]=Od Franka Pieczynskega\nTemelji na grafiki igre "pingus".
+About[sr]=Autor Frenk Pjekzinski\nBazirano na grafici igre "pingus".
+About[sv]=Av Frank Pieczynski\nBaserad på grafik från spelet "Pingus"
+About[th]=โดย Frank Pieczynski\nโดยใช้พื้นฐานกราฟิกจากเกม "pingus"
+About[tr]=Frank Pieczynski\nPingus oyunundan esinlenilmiştir.
+About[uk]=Автор: Frank Pieczynski\nПобудовано з графіки для гри "pingus".
+About[ven]=Nga Frank Pieczynski\nZwo di sendeka nga girafu ya mutambo "pingus".
+About[xh]=Ngu Frank Pieczynski\nyamelene nemizobo yomdlalo "pingus".
+About[zh_CN]=作者：Frank Pieczynski\n基于“pingus”游戏中的图形。
+Icon=pinguin.xpm
+Base=Base
+Sequences=WalkLeft,WalkRight,Float,Tumble,Dig,BashLeft,BashRight
+Focus=FallUp
+Blur=FallDown
+Destroy=Bomb
+
+[Base]
+Sequence=blocker1.xpm,blocker2.xpm,blocker3.xpm,blocker4.xpm,blocker5.xpm,blocker6.xpm,blocker1.xpm,blocker2.xpm,blocker3.xpm,blocker4.xpm,blocker5.xpm,blocker6.xpm
+Movement=0,0,0,0,0,0,0,0,0,0,0,0
+Delay=200,200,1000,200,200,200,200,200,1000,200,200,200
+HotspotX=16,16,16,16,16,16,16,16,16,16,16,16
+HotspotY=32,32,32,32,32,32,32,32,32,32,32,32
+
+[Float]
+Sequence=floater1.xpm,floater2.xpm,floater3.xpm,floater4.xpm,floater5.xpm,floater6.xpm,floater7.xpm,floater8.xpm
+Movement=2,2,2,2,2,2,2,2
+Delay=200,200,200,200,200,200,200,200
+HotspotX=16,16,16,16,16,16,16,16
+HotspotY=32,40,50,60,60,50,40,32
+
+[FallDown]
+Sequence=faller1.xpm,faller2.xpm,faller3.xpm,faller4.xpm,faller5.xpm,faller6.xpm,faller7.xpm,faller8.xpm
+Movement=0,0,0,0,0,0,0,0
+Delay=200,200,200,200,200,200,200,200
+HotspotX=16,16,16,16,16,16,16,16
+HotspotY=20,10,-10,-50,-130,-300,-500,-750
+#HotspotY=32,20,0,-20,-50,-80,-120,-160
+
+[FallUp]
+Sequence=faller1.xpm,faller2.xpm,faller3.xpm,faller4.xpm,faller5.xpm,faller6.xpm,faller7.xpm,faller8.xpm
+Movement=0,0,0,0,0,0,0,0
+Delay=100,100,100,100,100,100,100,100
+HotspotX=16,16,16,16,16,16,16,16
+HotspotY=750,500,250,150,100,75,50,40
+
+[Tumble]
+Sequence=tumble1.xpm,tumble2.xpm,tumble3.xpm,tumble4.xpm,tumble5.xpm,tumble6.xpm,tumble7.xpm,tumble8.xpm
+Movement=0,0,0,0,0,0,0,0
+Delay=200,200,200,200,200,200,200,200
+HotspotX=16,16,16,16,16,16,16,16
+HotspotY=32,32,32,32,32,32,32,32
+
+[WalkLeft]
+Sequence=walk_l1.xpm,walk_l2.xpm,walk_l3.xpm,walk_l4.xpm,walk_l5.xpm,walk_l6.xpm,walk_l7.xpm,walk_l8.xpm
+Movement=-4,-4,-4,-4,-4,-4,-4,-4
+Delay=300,300,300,300,300,300,300,300
+HotspotX=16,16,16,16,16,16,16,16
+HotspotY=32,32,32,32,32,32,32,32
+
+[WalkRight]
+Sequence=walk_r1.xpm,walk_r2.xpm,walk_r3.xpm,walk_r4.xpm,walk_r5.xpm,walk_r6.xpm,walk_r7.xpm,walk_r8.xpm
+Movement=4,4,4,4,4,4,4,4
+Delay=300,300,300,300,300,300,300,300
+HotspotX=16,16,16,16,16,16,16,16
+HotspotY=32,32,32,32,32,32,32,32
+
+[BashLeft]
+Sequence=bash_l1.xpm,bash_l2.xpm,bash_l3.xpm,bash_l4.xpm,bash_l5.xpm,bash_l6.xpm,bash_l7.xpm,bash_l8.xpm,bash_l9.xpm,bash_l10.xpm,bash_l11.xpm,bash_l12.xpm
+Movement=-8,-8,-8,-8,-8,-8,-8,-8,-8,-8,-8,-8
+Delay=200,200,200,200,200,200,200,200,200,200,200,200
+HotspotX=16,16,16,16,16,16,16,16,16,16,16,16
+HotspotY=32,32,32,32,32,32,32,32,32,32,32,32
+
+[BashRight]
+Sequence=bash_r1.xpm,bash_r2.xpm,bash_r3.xpm,bash_r4.xpm,bash_r5.xpm,bash_r6.xpm,bash_r7.xpm,bash_r8.xpm,bash_r9.xpm,bash_r10.xpm,bash_r11.xpm,bash_r12.xpm
+Movement=8,8,8,8,8,8,8,8,8,8,8,8
+Delay=200,200,200,200,200,200,200,200,200,200,200,200
+HotspotX=16,16,16,16,16,16,16,16,16,16,16,16
+HotspotY=32,32,32,32,32,32,32,32,32,32,32,32
+
+[Bomb]
+Sequence=bomber1.xpm,bomber2.xpm,bomber3.xpm,bomber4.xpm,bomber5.xpm,bomber6.xpm,bomber7.xpm,bomber8.xpm,bomber9.xpm,bomber10.xpm,bomber11.xpm,bomber12.xpm,bomber13.xpm,bomber14.xpm,bomber15.xpm,bomber16.xpm
+Movement=0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+Delay=100,100,100,100,100,100,100,100,100,100,100,200,200,200,200,200
+HotspotX=16,16,16,16,16,16,16,16,16,16,16,16,16,16,16,16
+HotspotY=32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32
+
+[Dig]
+Sequence=digger1.xpm,digger2.xpm,digger3.xpm,digger4.xpm,digger5.xpm,digger6.xpm,digger7.xpm,digger8.xpm,digger9.xpm,digger10.xpm,digger11.xpm,digger12.xpm,digger13.xpm,digger14.xpm
+Movement=0,0,0,0,0,0,0,0,0,0,0,0,0,0
+Delay=200,200,200,200,200,200,200,200,200,200,200,200,200,200
+HotspotX=16,16,16,16,16,16,16,16,16,16,16,16,16,16
+HotspotY=32,32,32,32,32,32,32,32,32,32,32,32,32,32
