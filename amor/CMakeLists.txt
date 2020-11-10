@@ -17,6 +17,7 @@ target_link_libraries(amor
     ${KDE1_KDEUI}
     Qt::Qt1
     X11::X11
+    X11::Xext
 )
 
 install(TARGETS amor RUNTIME DESTINATION ${KDE1_BINDIR})
