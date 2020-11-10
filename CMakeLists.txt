@@ -1,6 +1,6 @@
 cmake_minimum_required (VERSION 3.0)
 
-project (amor)
+project (amor VERSION 0.5)
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_BUILD_WITH_INSTALL_RPATH ON)
