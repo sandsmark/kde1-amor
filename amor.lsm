@@ -1,0 +1,16 @@
+Begin3
+Title:          AMOR - Amusing Misuse Of Resources
+Version:        0.4
+Entered-date:   23-05-1999
+Description:    KWM module that displays an animation above the active window.
+Keywords:       KDE Qt Animation
+Author:         Martin R. Jones <mjones@kde.org>
+Maintained-by:  Martin R. Jones <mjones@kde.org>
+Home-page:      http://www.powerup.com.au/~mjones/amor.html
+Alternate-site: 
+Primary-site:   ftp://ftp.kde.org/pub/kde/unstable/apps/toys
+                164927  amor-0.4.tar.gz
+                600     amor-0.4.lsm
+Platform:       Linux. Needs Qt and KDE 1.1.x
+Copying-policy: GPL
+End

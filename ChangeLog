@@ -1,0 +1,27 @@
+21-04-1999 - Version 0.1
+------------------------
+
+- First (limited) release
+
+22-04-1999 - Version 0.2
+------------------------
+
+- Animation is stopped before the popup menu is shown - seems to prevent
+  X server crash.
+- Some code cleanups.
+
+
+11-05-1999 - Version 0.3
+------------------------
+
+- Always on top option.
+- Animation sleeps if the mouse isn't moved for 1 minute.
+
+
+23-05-1999 - Version 0.4
+------------------------
+
+- Session management.
+- Vertical offset configurable.
+- Real cause of X server crash identified and fixed.
+

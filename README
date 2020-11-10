@@ -1,0 +1,19 @@
+AMOR
+----
+
+ Amusing
+ Misuse
+ Of
+ Resources
+
+This is a pointless program that displays simple animations on the title bar
+of the active window.
+
+I would like people to contribute interesting animations.  See the *rc files
+in the amor/animations directory to see the format.  I may document them if
+I receive enough interest.
+
+---
+Martin Jones
+mjones@kde.org
+
