@@ -135,7 +135,7 @@ qt_libraries = @qt_libraries@
 x_includes = @x_includes@
 x_libraries = @x_libraries@
 
-data_DATA = amor.html amor-1.html amor-2.html amor.gif
+data_DATA = 
 
 # This is where it will all be installed
 datadir = $(kde_htmldir)/en/amor

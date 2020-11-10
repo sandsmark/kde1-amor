@@ -57,9 +57,11 @@ dnl output files
 dnl Add all your Makefiles here. These are created by configure
 AC_OUTPUT(Makefile \
          amor/Makefile \
-         amor/animations/Makefile \
-         amor/animations/blob/Makefile \
-         amor/animations/ghost/Makefile \
+         amor/data/Makefile \
+         amor/data/blob/Makefile \
+         amor/data/ghost/Makefile \
+         amor/data/eyes/Makefile \
+         amor/data/b/Makefile \
          amor/doc/Makefile \
          amor/doc/en/Makefile \
          po/Makefile)

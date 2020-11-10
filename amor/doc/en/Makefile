@@ -135,7 +135,7 @@ qt_libraries = /usr/local/qt/lib
 x_includes = /usr/X11R6/include
 x_libraries = /usr/X11R6/lib
 
-data_DATA = amor.html amor-1.html amor-2.html amor.gif
+data_DATA = 
 
 # This is where it will all be installed
 datadir = $(kde_htmldir)/en/amor

@@ -13,18 +13,35 @@
 #include "amor.h"
 #include "amor.moc"
 #include "amorpm.h"
+#include "amorbubble.h"
 #include "version.h"
 
-#define SLEEP_TIMEOUT   60  // Animation sleeps after SLEEP_TIMEOUT seconds
-                            // of mouse inactivity.
+#define SLEEP_TIMEOUT   180     // Animation sleeps after SLEEP_TIMEOUT seconds
+                                // of mouse inactivity.
+#define BUBBLE_TIMEOUT  4000    // Minimum milliseconds to display a tip
+#define TIPS_FILE       "tips"  // Display tips in TIP_FILE-LANG, e.g "tips-en"
+#define TIP_FREQUENCY   20      // Frequency tips are displayed small == more
+                                // often.
+
+// Standard animation groups
+#define ANIM_BASE       "Base"
+#define ANIM_NORMAL     "Sequences"
+#define ANIM_FOCUS      "Focus"
+#define ANIM_BLUR       "Blur"
+#define ANIM_DESTROY    "Destroy"
+#define ANIM_SLEEP      "Sleep"
+#define ANIM_WAKE       "Wake"
 
 //---------------------------------------------------------------------------
 //
 // Constructor
 //
 Amor::Amor(KWMModuleApplication &app)
-    : QObject(), mApp(app), mMaximumSize(0, 0)
+    : QObject(), mApp(app)
 {
+    mAmor = 0;
+    mBubble = 0;
+
     if (readConfig())
     {
         connect(&app, SIGNAL(windowActivate(Window)),
@@ -32,18 +49,11 @@ Amor::Amor(KWMModuleApplication &app)
         connect(&app, SIGNAL(windowRemove(Window)),
                 SLOT(slotWindowRemove(Window)));
         connect(&app, SIGNAL(windowRaise(Window)),
-                SLOT(slotStacking(Window)));
+                SLOT(slotRaise(Window)));
         connect(&app, SIGNAL(windowLower(Window)),
-                SLOT(slotStacking(Window)));
+                SLOT(slotLower(Window)));
         connect(&app, SIGNAL(windowChange(Window)),
                 SLOT(slotWindowChange(Window)));
-
-        mAnimations.setAutoDelete(true);
-        mFocusAnim.setAutoDelete(true);
-        mBlurAnim.setAutoDelete(true);
-        mDestroyAnim.setAutoDelete(true);
-        mSleepAnim.setAutoDelete(true);
-        mWakeAnim.setAutoDelete(true);
 
         mTargetWin   = 0;
         mNextTarget  = 0;
@@ -54,11 +64,12 @@ Amor::Amor(KWMModuleApplication &app)
         mState       = Normal;
         mResizeId    = 0;
         mCursId      = 0;
+        mBubbleId    = 0;
 
         mAmor = new AmorWidget();
         connect(mAmor, SIGNAL(mouseClicked(const QPoint &)),
                         SLOT(slotMouseClicked(const QPoint &)));
-        mAmor->resize(mMaximumSize);
+        mAmor->resize(mTheme.maximumSize());
 
         mTimer = new QTimer(this);
         connect(mTimer, SIGNAL(timeout()), SLOT(slotTimeout()));
@@ -79,7 +90,14 @@ Amor::Amor(KWMModuleApplication &app)
 //
 Amor::~Amor()
 {
-    delete mAmor;
+    if (mAmor)
+    {
+        delete mAmor;
+    }
+    if (mBubble)
+    {
+        delete mBubble;
+    }
 }
 
 //---------------------------------------------------------------------------
@@ -90,16 +108,9 @@ void Amor::reset()
 {
     mTimer->stop();
 
-    mMaximumSize.setWidth(0);
-    mMaximumSize.setHeight(0);
-
-    mAnimations.clear();
-    mFocusAnim.clear();
-    mBlurAnim.clear();
-    mDestroyAnim.clear();
-    mSleepAnim.clear();
-    mWakeAnim.clear();
     AmorPixmapManager::manager()->reset();
+    mTips.reset();
+    delete mAmor;
 
     readConfig();
 
@@ -109,7 +120,10 @@ void Amor::reset()
     mPosition   = mCurrAnim->hotspot().x();
     mState      = Normal;
 
-    mAmor->resize(mMaximumSize);
+    mAmor = new AmorWidget();
+    connect(mAmor, SIGNAL(mouseClicked(const QPoint &)),
+                    SLOT(slotMouseClicked(const QPoint &)));
+    mAmor->resize(mTheme.maximumSize());
 }
 
 //---------------------------------------------------------------------------
@@ -118,126 +132,98 @@ void Amor::reset()
 //
 bool Amor::readConfig()
 {
-    KConfig *config = mApp.getConfig();
+    // Read user preferences
+    mConfig.read();
 
-    mOnTop  = config->readBoolEntry("OnTop");
-    mOffset = config->readNumEntry("Offset");
-    mTheme  = config->readEntry("Theme", "blobrc");
-    if (!readThemeConfig(mTheme))
+    if (mConfig.mTips)
+    {
+        mTips.setFile(TIPS_FILE);
+    }
+
+    // read selected theme
+    if (!mTheme.setTheme(mConfig.mTheme))
     {
         QMessageBox::critical(0, "Amor",
-                             i18n("Error reading theme: ") + mTheme);
+                             i18n("Error reading theme: ") + mConfig.mTheme);
         return false;
     }
+
+    const char *groups[] = { ANIM_BASE, ANIM_NORMAL, ANIM_FOCUS, ANIM_BLUR,
+                            ANIM_DESTROY, ANIM_SLEEP, ANIM_WAKE, 0 };
+
+    // Read all the standard animation groups
+    for (int i = 0; groups[i]; i++)
+    {
+        if (mTheme.readGroup(groups[i]) == false)
+        {
+            QMessageBox::critical(0, "Amor", i18n("Error reading group: ") +
+                             QString(groups[i]));
+            return false;
+        }
+    }
+
+    // Get the base animation
+    mBaseAnim = mTheme.random(ANIM_BASE);
 
     return true;
 }
 
 //---------------------------------------------------------------------------
 //
-// Read all animations for a particluar theme
+// Show the bubble text
 //
-bool Amor::readThemeConfig(const char *file)
+void Amor::showBubble(const char *msg)
 {
-    QString path = KApplication::localkdedir().copy();
-    path += "/share/apps/amor/";
-    path += file;
-
-    if (access(path, R_OK))
+    if (msg)
     {
-        path = KApplication::kde_datadir().copy();
-        path += "/amor/";
-        path += file;
-    }
+        if (!mBubble)
+        {
+            mBubble = new AmorBubble;
+        }
 
-    KSimpleConfig config(path, true);
-    config.setGroup("Config");
-
-    // Get the directory where the pixmaps are stored and tell the
-    // pixmap manager.
-    QString pixmapPath = config.readEntry("PixmapPath");
-    if (pixmapPath.isEmpty())
-    {
-        return false;
-    }
-
-    if (pixmapPath[0] == '/')
-    {
-        // absolute path to pixmaps
-        path = pixmapPath;
-    }
-    else
-    {
-        // relative to config file.
-        path.truncate(path.findRev('/')+1);
-        path += pixmapPath;
-    }
-
-    AmorPixmapManager::manager()->setPixmapDir(path);
-
-    // There must always be a base animation which does not move and is
-    // the "glue" between all animations.
-    config.setGroup("Base");
-    mBaseAnim = new AmorAnim(config);
-    mAnimations.append(mBaseAnim);   // base can be used as normal anim too.
-
-    // Read all the animation groups
-    readGroupConfig(config, mAnimations, "Sequences");
-    readGroupConfig(config, mFocusAnim, "Focus");
-    readGroupConfig(config, mBlurAnim, "Blur");
-    readGroupConfig(config, mDestroyAnim, "Destroy");
-    readGroupConfig(config, mSleepAnim, "Sleep");
-    readGroupConfig(config, mWakeAnim, "Wake");
-
-    return true;
-}
-
-//---------------------------------------------------------------------------
-//
-// Read an animation group.
-//
-void Amor::readGroupConfig(KConfigBase &config, QList<AmorAnim> &animList,
-                                const char *seq)
-{
-    // Read the list of available animations.
-    config.setGroup("Config");
-    QStrList list;
-    int entries = config.readListEntry(seq, list);
-
-    // Read each individual animation
-    for (int i = 0; i < entries; i++)
-    {
-        config.setGroup(list.at(i));
-        AmorAnim *anim = new AmorAnim(config);
-        animList.append(anim);
-        mMaximumSize = mMaximumSize.expandedTo(anim->maximumSize());
-    }
-
-    // If no animations were available for this group, just add the base anim
-    if (entries == 0)
-    {
-        config.setGroup("Base");
-        AmorAnim *anim = new AmorAnim(config);
-        animList.append(anim);
-        mMaximumSize = mMaximumSize.expandedTo(anim->maximumSize());
+        mBubble->setOrigin(mAmor->x()+mAmor->width()/2,
+                           mAmor->y()+mAmor->height()/2);
+        mBubble->setMessage(msg);
+        mBubble->show();
+        mBubbleId = startTimer(BUBBLE_TIMEOUT + strlen(msg) * 30);
     }
 }
 
 //---------------------------------------------------------------------------
 //
-// Randomly select a new animation.
+// Hide the bubble text if visible
+//
+void Amor::hideBubble()
+{
+    if (mBubbleId)
+    {
+        killTimer(mBubbleId);
+        mBubbleId = 0;
+    }
+    if (mBubble)
+    {
+        delete mBubble;
+        mBubble = 0;
+    }
+}
+
+//---------------------------------------------------------------------------
+//
+// Select a new animation appropriate for the current state.
 //
 void Amor::selectAnimation(State state)
 {
     switch (state)
     {
         case Blur:
-            mCurrAnim = mBlurAnim.at(random()%mBlurAnim.count());
+            hideBubble();
+            mCurrAnim = mTheme.random(ANIM_BLUR);
             mState = Focus;
             break;
 
         case Focus:
-            mCurrAnim = mFocusAnim.at(random()%mFocusAnim.count());
+            hideBubble();
+            mCurrAnim = mTheme.random(ANIM_FOCUS);
             mCurrAnim->reset();
             mTargetWin = mNextTarget;
             if (mTargetWin != None)
@@ -266,23 +252,28 @@ void Amor::selectAnimation(State state)
             break;
 
         case Destroy:
-            mCurrAnim = mDestroyAnim.at(random()%mDestroyAnim.count());
+            hideBubble();
+            mCurrAnim = mTheme.random(ANIM_DESTROY);
             mState = Focus;
             break;
 
         case Sleeping:
-            mCurrAnim = mSleepAnim.at(random()%mSleepAnim.count());
+            mCurrAnim = mTheme.random(ANIM_SLEEP);
             break;
 
         case Waking:
-            mCurrAnim = mWakeAnim.at(random()%mWakeAnim.count());
+            mCurrAnim = mTheme.random(ANIM_WAKE);
             mState = Normal;
             break;
 
         default:
-            if (mCurrAnim == mBaseAnim)
+            // Select a random normal animation if the current animation
+            // is not the base, otherwise select the base.  This makes us
+            // alternate between the base animation and a random
+            // animination.
+            if (mCurrAnim == mBaseAnim && !mBubble)
             {
-                mCurrAnim = mAnimations.at(random()%mAnimations.count());
+                mCurrAnim = mTheme.random(ANIM_NORMAL);
             }
             else
             {
@@ -299,6 +290,7 @@ void Amor::selectAnimation(State state)
         // use the default animation.
         mCurrAnim = mBaseAnim;
     }
+
     mCurrAnim->reset();
 }
 
@@ -314,7 +306,7 @@ void Amor::restack()
         return;
     }
 
-    if (mOnTop)
+    if (mConfig.mOnTop)
     {
         // simply raise the widget to the top
         mAmor->raise();
@@ -341,7 +333,6 @@ void Amor::restack()
     values.stack_mode = Above;
     XConfigureWindow(qt_xdisplay(), mAmor->winId(), CWSibling | CWStackMode,
                      &values);
-
 }
 
 //---------------------------------------------------------------------------
@@ -353,6 +344,7 @@ void Amor::timerEvent(QTimerEvent *te)
     if (te->timerId() == mResizeId)
     {
         killTimer(mResizeId);
+        mResizeId = 0;
         restack();
     }
     else if (te->timerId() == mCursId)
@@ -376,6 +368,10 @@ void Amor::timerEvent(QTimerEvent *te)
             // The next animation will become sleeping
             mState = Sleeping;
         }
+    }
+    else if (te->timerId() == mBubbleId)
+    {
+        hideBubble();
     }
 }
 
@@ -419,11 +415,21 @@ void Amor::slotTimeout()
     mPosition += mCurrAnim->movement();
     mAmor->setPixmap(mCurrAnim->frame());
     mAmor->move(mPosition + mTargetRect.x() - mCurrAnim->hotspot().x(),
-                 mTargetRect.y() - mCurrAnim->hotspot().y() + mOffset);
+                 mTargetRect.y() - mCurrAnim->hotspot().y() + mConfig.mOffset);
     if (!mAmor->isVisible())
     {
         mAmor->show();
         restack();
+    }
+
+    // At the start of a base animation, we can randomly display
+    // a helpful tip.
+    if (mCurrAnim == mBaseAnim && mCurrAnim->frameNum() == 0)
+    {
+        if (random()%TIP_FREQUENCY == 1 && mConfig.mTips && !mBubble)
+        {
+            showBubble(mTips.tip());
+        }
     }
 
     mTimer->start(mCurrAnim->delay(), true);
@@ -466,12 +472,12 @@ void Amor::slotConfigChanged()
 //
 void Amor::slotOffsetChanged(int off)
 {
-    mOffset = off;
+    mConfig.mOffset = off;
 
     if (mCurrAnim->frame())
     {
         mAmor->move(mPosition + mTargetRect.x() - mCurrAnim->hotspot().x(),
-                 mTargetRect.y() - mCurrAnim->hotspot().y() + mOffset);
+                 mTargetRect.y() - mCurrAnim->hotspot().y() + mConfig.mOffset);
     }
 }
 
@@ -482,8 +488,9 @@ void Amor::slotOffsetChanged(int off)
 void Amor::slotAbout()
 {
     QString about = i18n("Amor  Version ") + QString(AMOR_VERSION) + "\n\n" +
-                    i18n("Amusing Misuse Of Resources\n\n") +
-                    i18n("Copyright (c) 1999 Martin R. Jones <mjones@kde.org>");
+                i18n("Amusing Misuse Of Resources\n\n") +
+                i18n("Copyright (c) 1999 Martin R. Jones <mjones@kde.org>\n") +
+                "\nhttp://www.powerup.com.au/~mjones/amor/";
     QMessageBox mb;
     mb.setText(about);
     mb.setCaption(i18n("About Amor"));
@@ -544,11 +551,32 @@ void Amor::slotWindowRemove(Window win)
 
 //---------------------------------------------------------------------------
 //
-// Window raised/lowered
+// Window raised
 //
-void Amor::slotStacking(Window win)
+void Amor::slotRaise(Window win)
 {
-    if (win == mTargetWin)
+    // If the target window is raised in normal mode,
+    // or any window is raised in OnTop mode then schedule a restack.
+    if (win == mTargetWin || mConfig.mOnTop)
+    {
+        // This is an active event that affects the target window
+        time(&mActiveTime);
+
+        // We seem to get this signal before the window has been restacked,
+        // so we just schedule a restack.
+        mResizeId = startTimer(20);
+    }
+}
+
+//---------------------------------------------------------------------------
+//
+// Window lowered
+//
+void Amor::slotLower(Window win)
+{
+    // If the target window is raised and we're not in OnTop mode then
+    // schedule a restack.
+    if (win == mTargetWin && !mConfig.mOnTop)
     {
         // This is an active event that affects the target window
         time(&mActiveTime);
@@ -588,6 +616,7 @@ void Amor::slotWindowChange(Window win)
         // make sure the animation is still on the window.
         if (mCurrAnim->frame())
         {
+            hideBubble();
             if (mPosition > mTargetRect.width() -
                     (mCurrAnim->frame()->width() - mCurrAnim->hotspot().x()))
             {
@@ -595,7 +624,8 @@ void Amor::slotWindowChange(Window win)
                     (mCurrAnim->frame()->width() - mCurrAnim->hotspot().x());
             }
             mAmor->move(mPosition + mTargetRect.x() - mCurrAnim->hotspot().x(),
-                     mTargetRect.y() - mCurrAnim->hotspot().y() + mOffset);
+                     mTargetRect.y() - mCurrAnim->hotspot().y() +
+                     mConfig.mOffset);
         }
     }
 }

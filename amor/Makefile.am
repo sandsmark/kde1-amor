@@ -16,7 +16,7 @@ APPSDIR = $(kde_appsdir)/Games
 # set the include path for X, qt and KDE
 INCLUDES= @all_includes@
 # claim, which subdirectories you want to install
-SUBDIRS = animations
+SUBDIRS = data
 
 #DEFS = @DEFS@ -I. -I$(srcdir) -I.. -DDOTRACE
 ####### This part is very amor specific
@@ -25,7 +25,7 @@ bin_PROGRAMS = 	amor
 
 # Which sources should be compiled for amor.
 amor_SOURCES	= amor.cpp amorwidget.cpp main.cpp amoranim.cpp amorpm.cpp\
-                  amordialog.cpp
+                  amordialog.cpp amorbubble.cpp amorconfig.cpp amortips.cpp
 
 # the library search path
 amor_LDFLAGS = @all_libraries@ @KDE_RPATH@
@@ -35,10 +35,11 @@ amor_LDFLAGS = @all_libraries@ @KDE_RPATH@
 amor_LDADD  = -lkdeui -lkdecore -lqt -lX11 -lXext @LIBSOCKET@     
 
 # this option you can leave out. Just, if you use "make dist", you need it
-noinst_HEADERS = amor.h amorwidget.h amoranim.h amorpm.h amordialog.h
+noinst_HEADERS = amor.h amorwidget.h amoranim.h amorpm.h amordialog.h\
+                 amorbubble.h amorconfig.h amortips.h
 
 # just to make sure, automake makes them 
-BUILTSOURCES =	amor.moc amorwidget.moc amordialog.moc
+BUILTSOURCES =	amor.moc amorwidget.moc amordialog.moc amorbubble.moc
 
 # if you "make distclean", this files get removed. If you want to remove
 # them while "make clean", use CLEANFILES
@@ -79,4 +80,8 @@ amorwidget.moc: amorwidget.h
 amordialog.cpp:amordialog.moc
 amordialog.moc: amordialog.h
 	$(MOC) amordialog.h -o amordialog.moc
+
+amorbubble.cpp:amorbubble.moc
+amorbubble.moc: amorbubble.h
+	$(MOC) amorbubble.h -o amorbubble.moc
 

@@ -15,6 +15,8 @@
 #include <qdialog.h>
 #include <qlistbox.h>
 #include <qlist.h>
+#include <qmultilinedit.h>
+#include "amorconfig.h"
 
 //---------------------------------------------------------------------------
 //
@@ -43,22 +45,21 @@ signals:
 protected slots:
     void slotHighlighted(int);
     void slotOnTop(bool);
+    void slotRandomTips(bool);
     void slotOffset(int);
     void slotOk();
     void slotCancel();
 
 protected:
-    void readConfig();
-    void writeConfig();
     void readThemes();
     void addTheme(QString path, QString file);
 
 protected:
     QListBox *mThemeListBox;
+    QMultiLineEdit *mAboutEdit;
     QStrList mThemes;
-    QString  mCurrTheme;
-    bool     mOnTop;
-    int      mOffset;
+    QStrList mThemeAbout;
+    AmorConfig mConfig;
 };
 
 //---------------------------------------------------------------------------

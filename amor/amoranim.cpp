@@ -7,6 +7,7 @@
 
 #include <stdlib.h>
 #include <kconfig.h>
+#include <kapp.h>
 #include "amoranim.h"
 #include "amorpm.h"
 
@@ -114,5 +115,140 @@ void AmorAnim::readConfig(KConfigBase &config)
     {
         mTotalMovement -= lastHotspot.x();
     }
+}
+
+//===========================================================================
+
+AmorThemeManager::AmorThemeManager()
+    : mMaximumSize(0, 0)
+{
+    mConfig = 0;
+    mAnimations.setAutoDelete(true);
+}
+
+//---------------------------------------------------------------------------
+//
+AmorThemeManager::~AmorThemeManager()
+{
+    if (mConfig)
+    {
+        delete mConfig;
+    }
+}
+
+//---------------------------------------------------------------------------
+//
+bool AmorThemeManager::setTheme(const char *file)
+{
+    mPath = KApplication::localkdedir().copy();
+    mPath += "/share/apps/amor/";
+    mPath += file;
+
+    if (access(mPath, R_OK))
+    {
+        mPath = KApplication::kde_datadir().copy();
+        mPath += "/amor/";
+        mPath += file;
+    }
+
+    if (mConfig)
+    {
+        delete mConfig;
+    }
+
+    mConfig = new KSimpleConfig(mPath, true);
+    mConfig->setGroup("Config");
+
+    // Get the directory where the pixmaps are stored and tell the
+    // pixmap manager.
+    QString pixmapPath = mConfig->readEntry("PixmapPath");
+    if (pixmapPath.isEmpty())
+    {
+        return false;
+    }
+
+    if (pixmapPath[0] == '/')
+    {
+        // absolute path to pixmaps
+        mPath = pixmapPath;
+    }
+    else
+    {
+        // relative to config file.
+        mPath.truncate(mPath.findRev('/')+1);
+        mPath += pixmapPath;
+    }
+
+    mMaximumSize.setWidth(0);
+    mMaximumSize.setHeight(0);
+
+    mAnimations.clear();
+
+    return true;
+}
+
+//---------------------------------------------------------------------------
+//
+// Select an animimation randomly from a group
+//
+AmorAnim *AmorThemeManager::random(const char *group)
+{
+    AmorAnimationGroup *animGroup = mAnimations.find(group);
+
+    if (animGroup)
+    {
+        return animGroup->at(::random()%animGroup->count());
+    }
+
+    return 0;
+}
+
+//---------------------------------------------------------------------------
+//
+// Read an animation group.
+//
+bool AmorThemeManager::readGroup(const char *seq)
+{
+    AmorPixmapManager::manager()->setPixmapDir(mPath);
+
+    AmorAnimationGroup *animList = new AmorAnimationGroup;
+    animList->setAutoDelete(true);
+
+    // Read the list of available animations.
+    mConfig->setGroup("Config");
+    QStrList list;
+    int entries = mConfig->readListEntry(seq, list);
+
+    // Read each individual animation
+    for (int i = 0; i < entries; i++)
+    {
+        mConfig->setGroup(list.at(i));
+        AmorAnim *anim = new AmorAnim(*mConfig);
+        animList->append(anim);
+        mMaximumSize = mMaximumSize.expandedTo(anim->maximumSize());
+    }
+
+    // If no animations were available for this group, just add the base anim
+    if (entries == 0)
+    {
+        mConfig->setGroup("Base");
+        AmorAnim *anim = new AmorAnim(*mConfig);
+        if (anim)
+        {
+            animList->append(anim);
+            mMaximumSize = mMaximumSize.expandedTo(anim->maximumSize());
+            entries++;
+        }
+    }
+
+    // Couldn't read any entries at all
+    if (entries == 0)
+    {
+        return false;
+    }
+
+    mAnimations.insert(seq, animList);
+
+    return true;
 }
 

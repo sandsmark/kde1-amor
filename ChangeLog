@@ -1,22 +1,10 @@
-21-04-1999 - Version 0.1
+07-06-1999 - Version 0.5
 ------------------------
 
-- First (limited) release
-
-22-04-1999 - Version 0.2
-------------------------
-
-- Animation is stopped before the popup menu is shown - seems to prevent
-  X server crash.
-- Some code cleanups.
-
-
-11-05-1999 - Version 0.3
-------------------------
-
-- Always on top option.
-- Animation sleeps if the mouse isn't moved for 1 minute.
-
+- On Top mode works somewhat better on modal dialogs.
+- Bubble tips implemented.
+- More code cleanups.
+- Added contributed animations
 
 23-05-1999 - Version 0.4
 ------------------------
@@ -24,4 +12,21 @@
 - Session management.
 - Vertical offset configurable.
 - Real cause of X server crash identified and fixed.
+- Some code cleanups.
 
+11-05-1999 - Version 0.3
+------------------------
+
+- Always on top option.
+- Animation sleeps if the mouse isn't moved for 1 minute.
+
+22-04-1999 - Version 0.2
+------------------------
+
+- Animation is stopped before the popup menu is shown - seems to prevent
+  X server crash.
+
+21-04-1999 - Version 0.1
+------------------------
+
+- First (limited) release

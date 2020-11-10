@@ -18,6 +18,9 @@
 
 #include "amoranim.h"
 #include "amorwidget.h"
+#include "amorbubble.h"
+#include "amortips.h"
+#include "amorconfig.h"
 #include "amordialog.h"
 
 //---------------------------------------------------------------------------
@@ -42,7 +45,8 @@ protected slots:
     void slotAbout();
     void slotWindowActivate(Window);
     void slotWindowRemove(Window);
-    void slotStacking(Window);
+    void slotRaise(Window);
+    void slotLower(Window);
     void slotWindowChange(Window);
 
 protected:
@@ -52,6 +56,9 @@ protected:
     bool readThemeConfig(const char *file);
     void readGroupConfig(KConfigBase &config, QList<AmorAnim> &animList,
                             const char *seq);
+    void showBubble(const char *msg);
+    void hideBubble();
+    AmorAnim *randomAnimation(QList<AmorAnim> &animList);
     void selectAnimation(State state=Normal);
     void restack();
     void active();
@@ -60,31 +67,27 @@ protected:
 
 private:
     KWMModuleApplication  &mApp;
-    Window          mTargetWin;   // The window that the animations sits on
-    QRect           mTargetRect;  // The goemetry of the target window
-    Window          mNextTarget;  // The window that will become the target
-    AmorWidget      *mAmor;       // The widget displaying the animation
-    QList<AmorAnim> mAnimations;  // List of all animations available
-    QList<AmorAnim> mFocusAnim;   // List of into focus animations 
-    QList<AmorAnim> mBlurAnim;    // List of loosing focus animations 
-    QList<AmorAnim> mDestroyAnim; // List of window unmapped animations 
-    QList<AmorAnim> mSleepAnim;   // List of sleeping animations 
-    QList<AmorAnim> mWakeAnim;    // List of waking up animations 
-    AmorAnim        *mBaseAnim;   // The base animation
-    AmorAnim        *mCurrAnim;   // The currently running animation
-    QSize           mMaximumSize; // The largest pixmap used
-    int             mPosition;    // The position of the animation
-    int             mOffset;      // The vertical offset of the animation
-    State           mState;       // The current state of the animation
-    QTimer          *mTimer;      // Frame timer
-    QString         mTheme;       // Animation theme
-    AmorDialog      *mAmorDialog; // Setup dialog
-    QPopupMenu      *mMenu;       // Our menu
-    int             mResizeId;    // Resize timer Id
-    bool            mOnTop;       // Should the animation always be on top?
-    time_t          mActiveTime;  // The time an active event occurred
-    QPoint          mCursPos;     // The last recorded position of the pointer
-    int             mCursId;      // Pointer position timer id
+    Window           mTargetWin;   // The window that the animations sits on
+    QRect            mTargetRect;  // The goemetry of the target window
+    Window           mNextTarget;  // The window that will become the target
+    AmorWidget       *mAmor;       // The widget displaying the animation
+    AmorThemeManager mTheme;       // Animations used by current theme
+    AmorAnim         *mBaseAnim;   // The base animation
+    AmorAnim         *mCurrAnim;   // The currently running animation
+    int              mPosition;    // The position of the animation
+    State            mState;       // The current state of the animation
+    QTimer           *mTimer;      // Frame timer
+    AmorDialog       *mAmorDialog; // Setup dialog
+    QPopupMenu       *mMenu;       // Our menu
+    int              mResizeId;    // Resize timer Id
+    time_t           mActiveTime;  // The time an active event occurred
+    QPoint           mCursPos;     // The last recorded position of the pointer
+    int              mCursId;      // Pointer position timer id
+    AmorBubble       *mBubble;     // Text bubble
+    int              mBubbleId;    // Bubble text timer Id
+    AmorTips         mTips;        // Tips to display in the bubble
+
+    AmorConfig       mConfig;      // Configuration parameters
 };
 
 //---------------------------------------------------------------------------

@@ -26,7 +26,7 @@
 AmorDialog::AmorDialog()
     : QDialog()
 {
-    readConfig();
+    mConfig.read();
 
     QVBoxLayout *layout = new QVBoxLayout(this, 15);
 
@@ -43,8 +43,13 @@ AmorDialog::AmorDialog()
 
     mThemeListBox = new QListBox(this);
     connect(mThemeListBox,SIGNAL(highlighted(int)),SLOT(slotHighlighted(int)));
-    mThemeListBox->setMinimumHeight(70);
-    themeBox->addWidget(mThemeListBox);
+    mThemeListBox->setMinimumSize(200, 70);
+    themeBox->addWidget(mThemeListBox, 2);
+
+    mAboutEdit = new QMultiLineEdit(this);
+    mAboutEdit->setReadOnly(true);
+    mAboutEdit->setMinimumHeight(40);
+    themeBox->addWidget(mAboutEdit, 1);
 
     // Animation offset
     QVBoxLayout *offsetBox = new QVBoxLayout();
@@ -54,7 +59,8 @@ AmorDialog::AmorDialog()
     label->setFixedSize(label->sizeHint());
     offsetBox->addWidget(label);
 
-    QSlider *slider = new QSlider(-40, 40, 5, mOffset, QSlider::Vertical, this);
+    QSlider *slider = new QSlider(-40, 40, 5, mConfig.mOffset,
+                                    QSlider::Vertical, this);
     connect(slider, SIGNAL(valueChanged(int)), SLOT(slotOffset(int)));
     slider->setFixedWidth(slider->sizeHint().width());
     offsetBox->addWidget(slider);
@@ -63,7 +69,13 @@ AmorDialog::AmorDialog()
     QCheckBox *checkBox = new QCheckBox(i18n("Always on top"), this);
     connect(checkBox, SIGNAL(toggled(bool)), SLOT(slotOnTop(bool)));
     checkBox->setFixedHeight(checkBox->sizeHint().height());
-    checkBox->setChecked(mOnTop);
+    checkBox->setChecked(mConfig.mOnTop);
+    layout->addWidget(checkBox);
+
+    checkBox = new QCheckBox(i18n("Show random tips"), this);
+    connect(checkBox, SIGNAL(toggled(bool)), SLOT(slotRandomTips(bool)));
+    checkBox->setFixedHeight(checkBox->sizeHint().height());
+    checkBox->setChecked(mConfig.mTips);
     layout->addWidget(checkBox);
 
     // OK/Cancel
@@ -86,7 +98,7 @@ AmorDialog::AmorDialog()
 
     readThemes();
 
-    resize( 350, 200 );
+    resize( 400, 300 );
 }
 
 //---------------------------------------------------------------------------
@@ -95,34 +107,6 @@ AmorDialog::AmorDialog()
 //
 AmorDialog::~AmorDialog()
 {
-}
-
-//---------------------------------------------------------------------------
-//
-// Read the configuration
-//
-void AmorDialog::readConfig()
-{
-    KConfig *config = kapp->getConfig();
-
-    mOnTop = config->readBoolEntry("OnTop");
-    mOffset = config->readNumEntry("Offset");
-    mCurrTheme = config->readEntry("Theme", "blobrc");
-}
-
-//---------------------------------------------------------------------------
-//
-// Write the configuration
-//
-void AmorDialog::writeConfig()
-{
-    KConfig *config = kapp->getConfig();
-
-    config->writeEntry("OnTop", mOnTop);
-    config->writeEntry("Offset", mOffset);
-    config->writeEntry("Theme", mCurrTheme);
-
-    config->sync();
 }
 
 //---------------------------------------------------------------------------
@@ -187,6 +171,7 @@ void AmorDialog::addTheme(QString path, QString file)
     }
 
     QString description = config.readEntry("Description");
+    QString about = config.readEntry("About", " ");
     QString pixmapName = config.readEntry("Icon");
 
     pixmapPath += "/";
@@ -197,8 +182,9 @@ void AmorDialog::addTheme(QString path, QString file)
     AmorListBoxItem *item = new AmorListBoxItem(description, pixmap);
     mThemeListBox->insertItem(item);
     mThemes.append(file);
+    mThemeAbout.append(about);
 
-    if (mCurrTheme == file)
+    if (mConfig.mTheme == file)
     {
         mThemeListBox->setSelected(mThemeListBox->count()-1, true);
     }
@@ -210,7 +196,8 @@ void AmorDialog::addTheme(QString path, QString file)
 //
 void AmorDialog::slotHighlighted(int index)
 {
-    mCurrTheme = mThemes.at(index);
+    mConfig.mTheme = mThemes.at(index);
+    mAboutEdit->setText(mThemeAbout.at(index));
 }
 
 //---------------------------------------------------------------------------
@@ -219,8 +206,8 @@ void AmorDialog::slotHighlighted(int index)
 //
 void AmorDialog::slotOffset(int off)
 {
-    mOffset = off;
-    emit offsetChanged(mOffset);
+    mConfig.mOffset = off;
+    emit offsetChanged(mConfig.mOffset);
 }
 
 //---------------------------------------------------------------------------
@@ -229,7 +216,16 @@ void AmorDialog::slotOffset(int off)
 //
 void AmorDialog::slotOnTop(bool onTop)
 {
-    mOnTop = onTop;
+    mConfig.mOnTop = onTop;
+}
+
+//---------------------------------------------------------------------------
+//
+// User toggled random tips
+//
+void AmorDialog::slotRandomTips(bool tips)
+{
+    mConfig.mTips = tips;
 }
 
 //---------------------------------------------------------------------------
@@ -238,7 +234,7 @@ void AmorDialog::slotOnTop(bool onTop)
 //
 void AmorDialog::slotOk()
 {
-    writeConfig();
+    mConfig.write();
     emit changed();
     accept();
 }

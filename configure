@@ -4388,9 +4388,11 @@ ac_given_INSTALL="$INSTALL"
 
 trap 'rm -fr `echo "Makefile \
          amor/Makefile \
-         amor/animations/Makefile \
-         amor/animations/blob/Makefile \
-         amor/animations/ghost/Makefile \
+         amor/data/Makefile \
+         amor/data/blob/Makefile \
+         amor/data/ghost/Makefile \
+         amor/data/eyes/Makefile \
+         amor/data/b/Makefile \
          amor/doc/Makefile \
          amor/doc/en/Makefile \
          po/Makefile config.h" | sed "s/:[^ ]*//g"` conftest*; exit 1' 1 2 15
@@ -4544,9 +4546,11 @@ cat >> $CONFIG_STATUS <<EOF
 
 CONFIG_FILES=\${CONFIG_FILES-"Makefile \
          amor/Makefile \
-         amor/animations/Makefile \
-         amor/animations/blob/Makefile \
-         amor/animations/ghost/Makefile \
+         amor/data/Makefile \
+         amor/data/blob/Makefile \
+         amor/data/ghost/Makefile \
+         amor/data/eyes/Makefile \
+         amor/data/b/Makefile \
          amor/doc/Makefile \
          amor/doc/en/Makefile \
          po/Makefile"}

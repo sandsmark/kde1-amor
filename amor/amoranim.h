@@ -12,8 +12,12 @@
 #include <config.h>
 #endif 
 
+#include <stdlib.h>
+#include <unistd.h>
 #include <qarray.h>
+#include <qdict.h>
 #include <kconfigbase.h>
+#include <ksimpleconfig.h>
 
 //---------------------------------------------------------------------------
 //
@@ -29,6 +33,8 @@ public:
         { mCurrent = 0; }
     bool next()
         { return (++mCurrent < mSequence.count()); }
+    int frameNum() const
+        { return mCurrent; }
     bool validFrame() const
         { return (mCurrent < mSequence.count()); }
     int totalMovement() const
@@ -55,6 +61,33 @@ protected:
     QArray<int>    mMovement;       // the distance to move between frames
     int            mTotalMovement;  // the total distance this animation moves
     QSize          mMaximumSize;    // the maximum size of any frame
+};
+
+//---------------------------------------------------------------------------
+typedef QList<AmorAnim> AmorAnimationGroup;
+
+//---------------------------------------------------------------------------
+//
+// AmorThemeManager maintains an animation theme
+//
+class AmorThemeManager
+{
+public:
+    AmorThemeManager();
+    virtual ~AmorThemeManager();
+
+    bool setTheme(const char *file);
+    bool readGroup(const char *seq);
+
+    AmorAnim *random(const char *group);
+
+    QSize maximumSize() const { return mMaximumSize; }
+
+protected:
+    QString           mPath;
+    KSimpleConfig     *mConfig;
+    QSize             mMaximumSize; // The largest pixmap used
+    QDict<AmorAnimationGroup> mAnimations; // list of animation groups
 };
 
 #endif // AMORANIM_H 
