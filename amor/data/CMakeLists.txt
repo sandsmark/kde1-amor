@@ -350,9 +350,9 @@ install(FILES
 )
 
 install(FILES
-    static/billy.png
-    static/bsd.png
-    static/tux.png
+    static/billy.xpm
+    static/bsd.xpm
+    static/tux.xpm
     DESTINATION ${KDE1_DATADIR}/amor/static
 )
 
