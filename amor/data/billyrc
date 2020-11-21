@@ -75,10 +75,10 @@ About[uk]=Натурщик статичного вікна\nГрафіка з ht
 About[ven]=Tshidzuli tsha window isa tshimbili\nGirafu ubva http://www.xbill.org/
 About[xh]=Isibambo sewindow esingashukumi\nUmzobo http://www.xbill.org/
 About[zh_CN]=窗口静坐者\n图形来自 http://www.xbill.org/
-Icon=billy.png
+Icon=billy.xpm
 
 [Base]
-Sequence=billy.png
+Sequence=billy.xpm
 HotspotX=14
 HotspotY=40
 

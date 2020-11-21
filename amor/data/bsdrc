@@ -73,10 +73,10 @@ About[tr]=Statik pencere bakıcı
 About[uk]=Статична прикраса для вікна
 About[ven]=Tshidzuli tsha window yo imaho
 About[zh_CN]=窗口静坐者
-Icon=bsd.png
+Icon=bsd.xpm
 
 [Base]
-Sequence=bsd.png
+Sequence=bsd.xpm
 HotspotX=25
 HotspotY=54
 
