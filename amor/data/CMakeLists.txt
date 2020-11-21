@@ -52,6 +52,38 @@ install(FILES
 )
 
 install(FILES
+    neko/claw1.xpm
+    neko/claw2.xpm
+    neko/jump1.xpm
+    neko/jump2.xpm
+    neko/jump3.xpm
+    neko/jump4.xpm
+    neko/jumpl1.xpm
+    neko/jumpl2.xpm
+    neko/jumpl3.xpm
+    neko/jumpl4.xpm
+    neko/lick.xpm
+    neko/lick2.xpm
+    neko/run1.xpm
+    neko/run2.xpm
+    neko/run3.xpm
+    neko/run4.xpm
+    neko/scratch1.xpm
+    neko/scratch2.xpm
+    neko/scratch3.xpm
+    neko/scratch4.xpm
+    neko/sit.xpm
+    neko/sitleft.xpm
+    neko/sleep1.xpm
+    neko/sleep2.xpm
+    neko/surprise.xpm
+    neko/tail.xpm
+    neko/yawn.xpm
+
+    DESTINATION ${KDE1_DATADIR}/amor/neko
+)
+
+install(FILES
     blob/blob.xpm
     blob/blob_b1.xpm
     blob/blob_b2.xpm
